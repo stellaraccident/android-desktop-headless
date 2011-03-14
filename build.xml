@@ -37,8 +37,19 @@
 		</javac>
 	</target>
 	
-	<target name="package" depends="clean,compile-core,compile-apache-http">
+	<target name="compile-libcore" depends="init">
+		<property name="libcore.dir" location="${android.src}/libcore"/>
+		<mkdir dir="${build.dir}/classes-libcore"/>
+		<javac destdir="${build.dir}/classes-libcore" includeAntRuntime="false" target="1.5" source="1.5" debug="true" encoding="UTF-8">
+			<src path="${libcore.dir}/json/src/main/java"/>
+			<src path="${libcore.dir}/xml/src/main/java"/>
+			<src path="${libcore.dir}/sqlite-jdbc/src/main/java"/>
+		</javac>
+	</target>
+	
+	<target name="package" depends="clean,compile-libcore,compile-core,compile-apache-http">
 		<jar jarfile="${build.dir}/android-desktop-headless.jar">
+			<fileset dir="${build.dir}/classes-libcore"/>
 			<fileset dir="${build.dir}/classes-core"/>
 			<fileset dir="${build.dir}/classes-http"/>
 		</jar>

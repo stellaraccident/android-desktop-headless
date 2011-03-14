@@ -1,0 +1,48 @@
+<project name="android-desktop-headless" default="package">
+
+	<property name="android.src" location="/home/stella/branches/android"/>
+	<property name="android.base.core" location="${android.src}/frameworks/base/core"/>
+	<property name="build.dir" location="build"/>
+
+	<!-- Patternsets -->
+	<patternset id="ps.core" includesfile="patterns/core.includes.txt" excludesfile="patterns/core.excludes.txt"/>
+	
+	<target name="init">
+	</target>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+	
+	<target name="compile-core" depends="init">
+		<!-- Compile core -->
+		<mkdir dir="${build.dir}/src-core"/>
+		<mkdir dir="${build.dir}/classes-core"/>
+		<copy todir="${build.dir}/src-core">
+			<fileset dir="${android.base.core}/java">
+				<patternset refid="ps.core"/>
+			</fileset>
+		</copy>
+		<javac destdir="${build.dir}/classes-core" includeAntRuntime="false" target="1.5" source="1.5" debug="true" encoding="UTF-8">
+			<src path="src-core"/>
+			<src path="${build.dir}/src-core"/>
+		</javac>
+	</target>
+	
+	<target name="compile-apache-http" depends="init">
+		<property name="http.dir" location="${android.src}/external/apache-http"/>
+		<mkdir dir="${build.dir}/classes-http"/>
+		<javac destdir="${build.dir}/classes-http" includeAntRuntime="false" target="1.5" source="1.5" debug="true" encoding="UTF-8">
+			<src path="${http.dir}"/>
+		</javac>
+	</target>
+	
+	<target name="package" depends="clean,compile-core,compile-apache-http">
+		<jar jarfile="${build.dir}/android-desktop-headless.jar">
+			<fileset dir="${build.dir}/classes-core"/>
+			<fileset dir="${build.dir}/classes-http"/>
+		</jar>
+	</target>
+	
+</project>
+

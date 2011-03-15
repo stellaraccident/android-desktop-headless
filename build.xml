@@ -2,10 +2,12 @@
 
 	<property name="android.src" location="/home/stella/branches/android"/>
 	<property name="android.base.core" location="${android.src}/frameworks/base/core"/>
+	<property name="android.base.location" location="${android.src}/frameworks/base/location"/>
 	<property name="build.dir" location="build"/>
 
 	<!-- Patternsets -->
 	<patternset id="ps.core" includesfile="patterns/core.includes.txt" excludesfile="patterns/core.excludes.txt"/>
+	<patternset id="ps.location" includesfile="patterns/location.includes.txt" excludesfile="patterns/location.excludes.txt"/>
 	
 	<target name="init">
 	</target>
@@ -21,6 +23,9 @@
 		<copy todir="${build.dir}/src-core">
 			<fileset dir="${android.base.core}/java">
 				<patternset refid="ps.core"/>
+			</fileset>
+			<fileset dir="${android.base.location}/java">
+				<patternset refid="ps.location"/>
 			</fileset>
 		</copy>
 		<javac destdir="${build.dir}/classes-core" includeAntRuntime="false" target="1.5" source="1.5" debug="true" encoding="UTF-8">

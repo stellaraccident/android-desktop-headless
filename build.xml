@@ -4,7 +4,9 @@
 	<property name="android.base.core" location="${android.src}/frameworks/base/core"/>
 	<property name="android.base.location" location="${android.src}/frameworks/base/location"/>
 	<property name="build.dir" location="build"/>
-
+	
+	<property name="aidl.exe" location="/home/stella/android-sdk/platform-tools/aidl"/>
+	
 	<!-- Patternsets -->
 	<patternset id="ps.core" includesfile="patterns/core.includes.txt" excludesfile="patterns/core.excludes.txt"/>
 	<patternset id="ps.location" includesfile="patterns/location.includes.txt" excludesfile="patterns/location.excludes.txt"/>
@@ -28,6 +30,15 @@
 				<patternset refid="ps.location"/>
 			</fileset>
 		</copy>
+		
+		<apply executable="${aidl.exe}">
+			<arg value="-I./src-core"/>
+			<arg value="-I${build.dir}/src-core"/>
+			<fileset dir="${build.dir}/src-core">
+				<include name="**/*.aidl"/>
+			</fileset>
+		</apply>
+		
 		<javac destdir="${build.dir}/classes-core" includeAntRuntime="false" target="1.5" source="1.5" debug="true" encoding="UTF-8">
 			<src path="src-core"/>
 			<src path="${build.dir}/src-core"/>

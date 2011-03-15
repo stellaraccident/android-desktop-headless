@@ -46,7 +46,10 @@ public class MessageQueue {
     	if (timeout==0) return;
     	
     	synchronized (blocker) {
-    		if (mMessages!=null) return;
+    		if (mMessages!=null) {
+    			// We have a dispatchable message
+    			if (mMessages.when<SystemClock.uptimeMillis()) return;
+    		}
     		
     		mBlocked=true;
     		
